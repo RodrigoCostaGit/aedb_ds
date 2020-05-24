@@ -14,7 +14,7 @@ class doublyLinkedList(SinglyLinkedList):
             return True
         else:
             return False
-    
+
     def size(self):
         count=0
         n=self.head
@@ -28,7 +28,7 @@ class doublyLinkedList(SinglyLinkedList):
             raise EmptyListException
         else:
             return self.head.element
-    
+
     def get(self, position):
         n=self.head
         count=0
@@ -122,4 +122,4 @@ class doublyLinkedList(SinglyLinkedList):
             n=self.head
             while n is not None:
                 print(n.element," ")
-                n=n.next_node
+                n=n.next_node 

@@ -8,19 +8,19 @@ class SinglyLinkedList(List):
         self.head=None
 
 
-    # def is_empty(self):
-    #     if self.head==None:
-    #         return True
-    #     else:
-    #         return False
+    def is_empty(self):
+        if self.head==None:
+            return True
+        else:
+            return False
  
-    # def size(self):
-    #     count=0
-    #     n=self.head
-    #     while n is not None:
-    #         count+=1
-    #         n=n.next_node
-    #     return count
+    def size(self):
+        count=0
+        n=self.head
+        while n is not None:
+            count+=1
+            n=n.next_node
+        return count
 
 
 
