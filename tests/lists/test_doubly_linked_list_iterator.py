@@ -1,6 +1,6 @@
 import unittest
 
-from aed_ds.lists.doubly_linked_list_iterator import DoublyLinkedList
+from aed_ds.lists.doubly_linked_list import DoublyLinkedList
 from aed_ds.exceptions import NoSuchElementException
 
 class TestDoublyLinkedListIterator(unittest.TestCase):
@@ -11,7 +11,7 @@ class TestDoublyLinkedListIterator(unittest.TestCase):
     def add_elements(self, quantity, shift=0):
         for i in range(quantity):
             self.list.insert_last(f"element {i+1+shift}")
-        self.iterator = self.list.iterator()
+        self.iterator = self.list.iterator()    
 
     def test_has_next(self):
         # 0 elements
@@ -29,7 +29,7 @@ class TestDoublyLinkedListIterator(unittest.TestCase):
         self.add_elements(3)
         self.assertTrue(self.iterator.has_next())
 
-        # iterate to end and test
+        # iterate to the end and test
         for _ in range(5):
             self.assertTrue(self.iterator.has_next())
             self.iterator.next()
@@ -40,7 +40,23 @@ class TestDoublyLinkedListIterator(unittest.TestCase):
         self.iterator = self.list.iterator()
         self.assertFalse(self.iterator.has_next())
     
-    def test_next(self): 
+    def test_has_next_alternative(self):
+        doubly_linked_list = DoublyLinkedList()
+        it = doubly_linked_list.iterator()
+        self.assertFalse(it.has_next())
+        doubly_linked_list.insert_last("element 1")
+        doubly_linked_list.insert_last("element 2")
+        doubly_linked_list.insert_last("element 3")
+        it = doubly_linked_list.iterator()
+        self.assertTrue(it.has_next())
+        it.next()
+        self.assertTrue(it.has_next())
+        it.next()
+        self.assertTrue(it.has_next())
+        it.next()
+        self.assertFalse(it.has_next())
+
+    def test_next(self):
         with self.assertRaises(NoSuchElementException):
             self.iterator.next()
         self.add_elements(1)
@@ -58,23 +74,27 @@ class TestDoublyLinkedListIterator(unittest.TestCase):
         self.iterator.rewind()
 
         self.add_elements(5)
-
-        # Iterate to middle and rewind
+        
         for _ in range(3):
             self.iterator.next()
         self.iterator.rewind()
         self.assertTrue(self.iterator.has_next())
         self.assertEqual(self.iterator.next(), "element 1")
+    
+    def test_has_previous_single(self):
+        self.add_elements(1)
+        self.iterator.next()
+        self.assertTrue(self.iterator.has_previous())
 
     def test_has_previous(self):
-            self.add_elements(5)
+        self.add_elements(5)
         self.assertTrue(self.iterator.has_next())
-
-        for _ in range(5):
-            self.assertTrue(self.iterator.has_previous())
-            self.iterator.next()
         self.assertFalse(self.iterator.has_previous())
-
+        
+        for _ in range(5):
+            self.iterator.next()
+            self.assertTrue(self.iterator.has_previous())
+    
     def test_previous(self):
         with self.assertRaises(NoSuchElementException):
             self.iterator.previous()
@@ -115,3 +135,12 @@ class TestDoublyLinkedListIterator(unittest.TestCase):
         self.iterator.full_forward()
         self.assertTrue(self.iterator.has_previous())
         self.assertEqual(self.iterator.previous(), "element 5")
+
+    def test_full_forward_alternative(self):
+        doubly_linked_list = DoublyLinkedList()
+        doubly_linked_list.insert_last("element 1")
+        doubly_linked_list.insert_last("element 2")
+        doubly_linked_list.insert_last("element 3")
+        it = doubly_linked_list.iterator()
+        it.full_forward()
+        self.assertEqual(it.previous(), "element 3")
